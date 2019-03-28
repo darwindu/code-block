@@ -1,0 +1,107 @@
+apply plugin: 'maven'
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'idea'
+
+version = "0.1.1"
+
+// Specify JDK version - may vary in different scenarios
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+[compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+// In this section you declare where to find the dependencies of your project
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven {
+        url "http://maven.aliyun.com/nexus/content/groups/public/"
+    }
+}
+
+def spring_version = "5.1.2.RELEASE"
+// spring
+List spring = [
+        "org.springframework:spring-core:$spring_version",
+        "org.springframework:spring-beans:$spring_version",
+        "org.springframework:spring-context:$spring_version",
+        "org.springframework:spring-tx:$spring_version",
+        "org.springframework:spring-jdbc:$spring_version",
+        "org.springframework:spring-test:$spring_version"
+]
+
+// junit test
+List junit = [
+        "junit:junit:4.12",
+        "org.springframework:spring-test:$spring_version"
+]
+
+// spring boot(websocket dependencies springboot core)
+/*List websocket = [
+        "org.springframework.boot:spring-boot-starter-websocket:2.1.0.RELEASE"
+]*/
+
+List logger = [
+        "org.springframework.boot:spring-boot-starter-log4j2:2.1.0.RELEASE"
+]
+
+List lombok = [
+        "org.projectlombok:lombok:1.16.14"
+]
+
+List jackson = [
+        "com.fasterxml.jackson.core:jackson-databind:2.8.8.1"
+]
+
+
+dependencies {
+    compile lombok, logger, jackson, spring
+    testCompile lombok, logger, jackson, spring, junit
+}
+
+configurations {
+    all*.exclude group:'org.springframework.boot',module:'spring-boot-starter-logging'
+}
+
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['src/test/java']
+        }
+        resources {
+            srcDirs = ['src/test/resources']
+        }
+    }
+}
+
+jar {
+    destinationDir file('dist/app')
+    archiveName project.name + '-' + version + '.jar'
+
+    exclude '**/*.xml'
+    exclude '**/*.properties'
+
+    doLast {
+        copy {
+            from file('src/main/resources/')
+            into 'dist/conf'
+        }
+        copy {
+            from configurations.runtime
+            into 'dist/lib'
+        }
+        copy {
+            from file('.').listFiles().findAll { File f -> (f.name.endsWith('.bat') || f.name.endsWith('.sh') || f.name.endsWith('.env')) }
+            into 'dist'
+        }
+    }
+}
