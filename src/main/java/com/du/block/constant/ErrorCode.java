@@ -3,7 +3,7 @@ package com.du.block.constant;
 /**
  * Define Error Code and the corresponding Error Message.
  *
- * @author lingfenghe
+ * @author darwindu
  */
 public enum ErrorCode {
 
