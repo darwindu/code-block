@@ -35,11 +35,10 @@ public class JsonUtilTest {
 
     @Test
     public void testJsonStrToObj() {
-
-        LinkedHashMap<String, Object> map = new LinkedHashMap<>();
+        
         String s = "{\"name\":\"zhang san\", \"age\":21}";
         HashMap<String, Object> propertitesMap =
-            (HashMap<String, Object>)JsonUtil.jsonStrToObj(map, s);
+            (HashMap<String, Object>)JsonUtil.jsonStrToObj(HashMap.class, s);
 
         log.info("[testJsonStrToObj] propertites:{}", propertitesMap);
         Assert.assertNotNull(propertitesMap);

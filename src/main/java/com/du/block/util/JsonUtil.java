@@ -35,16 +35,16 @@ public class JsonUtil {
     /**
      * Json String to Object.
      *
-     * @param obj Object
+     * @param clazz Class
      * @param jsonStr Json String
      * @return Object
      */
-    public static Object jsonStrToObj(Object obj, String jsonStr) {
+    public static Object jsonStrToObj(Class clazz, String jsonStr) {
 
         try {
             return OBJECT_READER.readValue(
                 OBJECT_MAPPER.getFactory().createParser(jsonStr),
-                obj.getClass());
+                clazz);
         } catch (IOException e) {
             throw new SdkException(e);
         }
