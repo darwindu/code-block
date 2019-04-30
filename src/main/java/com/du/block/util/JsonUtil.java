@@ -32,12 +32,12 @@ public class JsonUtil {
         OBJECT_READER = OBJECT_MAPPER.reader();
     }
 
+
     /**
      * Json String to Object.
-     *
      * @param clazz Class
      * @param jsonStr Json String
-     * @return Object
+     * @return
      */
     public static Object jsonStrToObj(Class clazz, String jsonStr) {
 
